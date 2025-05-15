@@ -1,4 +1,4 @@
-name: Sequential Dependency Build
+name: Build IS with Changes
 
 on:
   push:
