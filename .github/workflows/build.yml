@@ -1,6 +1,9 @@
 name: Sequential Dependency Build
 
 on:
+  push:
+      branches:
+        - '**'
   workflow_dispatch:
     inputs:
       kernel-branch:
