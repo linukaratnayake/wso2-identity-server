@@ -41,43 +41,56 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: 'linukaratnayake/wso2-carbon-kernel'
-          ref: ${{ github.event.inputs.kernel-branch }}
+          ref: ${{ github.event.inputs.kernel-branch || 'unify-httpclient' }}
+          path: './carbon-kernel'
       
       - name: Build Carbon Kernel
         run: |
+          cd ./carbon-kernel
           mvn clean install -Dmaven.test.skip=true
-          cd ..
       
       # Repository 2
       - name: Checkout Identity Framework
         uses: actions/checkout@v3
         with:
           repository: 'linukaratnayake/wso2-carbon-identity-framework'
-          ref: ${{ github.event.inputs.framework-branch }}
+          ref: ${{ github.event.inputs.framework-branch || 'v7.8.23-http-client' }}
+          path: './identity-framework'
       
       - name: Build Identity Framework
         run: |
+          cd ./identity-framework
           mvn clean install -Dmaven.test.skip=true
-          cd ..
       
       # Repository 3
       - name: Checkout Identity Governance
         uses: actions/checkout@v3
         with:
           repository: 'linukaratnayake/wso2-identity-governance'
-          ref: ${{ github.event.inputs.governance-branch }}
+          ref: ${{ github.event.inputs.governance-branch || 'http-client' }}
+          path: './identity-governance'
       
       - name: Build Identity Governance
         run: |
+          cd ./identity-governance
           mvn clean install -Dmaven.test.skip=true
-          cd ..
       
       # Current Repository (wso2-identity-server)
       - name: Checkout Current Repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.current-branch }}
+          ref: ${{ github.event.inputs.current-branch || github.ref_name }}
+          path: './wso2-identity-server'
       
       - name: Build Current Repository
         run: |
+          cd ./wso2-identity-server
           mvn clean install
+          
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            ./wso2-identity-server/modules/*/target/*.jar
+            ./wso2-identity-server/target/*.jar
