@@ -21,7 +21,7 @@ on:
       current-branch:
         description: 'Branch for Identity Server'
         required: true
-        default: 'master'
+        default: 'build_is'
 
 jobs:
   build:
@@ -119,7 +119,7 @@ jobs:
       - name: Checkout Current Repository Branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.current-branch || github.ref_name }}
+          ref: ${{ github.event.inputs.current-branch || 'build_is' }}
           
       - name: Verify Current Repository Checkout
         run: |
