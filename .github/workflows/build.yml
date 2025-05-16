@@ -21,7 +21,7 @@ on:
       current-branch:
         description: 'Branch for Identity Server'
         required: true
-        default: 'build_is'
+        default: 'master'
 
 jobs:
   build:
@@ -136,11 +136,3 @@ jobs:
             echo "ERROR: No pom.xml found in Current Repository directory"
             exit 1
           fi
-          
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            ./modules/*/target/*.jar
-            ./target/*.jar
